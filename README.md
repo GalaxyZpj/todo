@@ -1,4 +1,6 @@
-# ToDo, built using Flutter
+# ToDo
+
+Built using Flutter.
 
 ## Getting Started
 
