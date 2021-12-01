@@ -1,6 +1,4 @@
-# todo
-
-A new Flutter project.
+# ToDo, built using Flutter
 
 ## Getting Started
 
