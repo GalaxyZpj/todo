@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import './screens/task_list.dart';
+import './providers/task_provider.dart';
+import './screens/task_screen.dart';
 
 void main() {
-  runApp(const ToDo());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => TaskProvider()),
+    ],
+    child: const ToDo(),
+  ));
 }
 
 class ToDo extends StatelessWidget {
@@ -16,7 +23,7 @@ class ToDo extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const TaskList(),
+      home: const TaskScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
