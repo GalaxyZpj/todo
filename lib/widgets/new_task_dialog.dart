@@ -14,8 +14,14 @@ class NewTaskDialog extends StatelessWidget {
 
     return Container(
       height: 220,
-      margin: const EdgeInsets.only(top: 30),
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      margin: EdgeInsets.only(
+        top: 30,
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      padding: const EdgeInsets.only(
+        left: 25,
+        right: 25,
+      ),
       child: TaskForm(
         taskTitle: '',
         taskDescription: '',

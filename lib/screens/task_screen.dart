@@ -66,10 +66,6 @@ class _TaskScreenState extends State<TaskScreen> {
             builder: (ctx) => NewTaskDialog(ctx),
             isScrollControlled: true,
           );
-          // showDialog(
-          //   context: context,
-          //   builder: (ctx) => NewTaskDialog(ctx),
-          // );
         },
       ),
     );

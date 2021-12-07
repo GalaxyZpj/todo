@@ -5,21 +5,10 @@ class NoTaskFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
-          Icon(
-            Icons.delete_sweep,
-            size: 90,
-          ),
-          Text(
-            'No tasks found',
-            style: TextStyle(fontSize: 20),
-          ),
-        ],
+    return const Center(
+      child: Text(
+        'Tap the add button to add new task.',
+        style: TextStyle(fontSize: 16),
       ),
     );
   }

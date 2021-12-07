@@ -50,6 +50,7 @@ class _TaskFormState extends State<TaskForm> {
     return Form(
       key: _form,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
             initialValue: _taskInput['title'],
