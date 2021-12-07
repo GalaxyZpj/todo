@@ -61,40 +61,54 @@ class _TaskCardState extends State<TaskCard> {
       switchOutCurve: Curves.elasticIn,
       child: _editMode
           ? _buildExpandedCard(task)
-          : Dismissible(
-              key: ValueKey(task.id),
-              onDismissed: (_) => widget.deleteTaskHandler(task.id),
-              child: Container(
-                height: 75,
-                margin: const EdgeInsets.symmetric(vertical: 2),
-                child: Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: ListTile(
-                          leading: ReorderableDelayedDragStartListener(
-                            index: widget.itemIndex,
-                            child: const Icon(Icons.drag_indicator),
-                          ),
-                          title: Text(
-                            task.title,
-                            maxLines: 1,
-                          ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.edit_rounded),
-                            splashRadius: 25,
-                            onPressed: toggleEditMode,
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Dismissible(
+                key: ValueKey(task.id),
+                background: Container(
+                  color: Colors.red,
+                ),
+                onDismissed: (_) {
+                  widget.deleteTaskHandler(task.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Task deleted'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 75,
+                  margin: const EdgeInsets.symmetric(vertical: 2),
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: ListTile(
+                            leading: ReorderableDelayedDragStartListener(
+                              index: widget.itemIndex,
+                              child: const Icon(Icons.drag_indicator),
+                            ),
+                            title: Text(
+                              task.title,
+                              maxLines: 1,
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.edit_rounded),
+                              splashRadius: 25,
+                              onPressed: toggleEditMode,
+                            ),
                           ),
                         ),
-                      ),
-                      task.isComplete
-                          ? const TaskCompleteOverlay()
-                          : Container(),
-                    ],
+                        task.isComplete
+                            ? const TaskCompleteOverlay()
+                            : Container(),
+                      ],
+                    ),
                   ),
                 ),
               ),

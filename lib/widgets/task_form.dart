@@ -53,11 +53,18 @@ class _TaskFormState extends State<TaskForm> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
+            onFieldSubmitted: (_) => saveTaskHandler(),
             initialValue: _taskInput['title'],
-            onSaved: (value) => _taskInput['title'] = value as String,
             decoration: const InputDecoration(
               label: Text('Title'),
             ),
+            onSaved: (value) => _taskInput['title'] = value as String,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Provide a title for task';
+              }
+              return null;
+            },
           ),
           TextFormField(
             initialValue: _taskInput['description'],
