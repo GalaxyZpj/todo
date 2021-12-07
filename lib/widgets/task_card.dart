@@ -57,68 +57,67 @@ class _TaskCardState extends State<TaskCard> {
   Widget build(BuildContext context) {
     final task = widget.task;
 
-    return AnimatedSize(
-      curve: Curves.easeOut,
-      duration: const Duration(milliseconds: 300),
-      child: _editMode
-          ? _buildExpandedCard(task)
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Dismissible(
-                key: ValueKey(task.id),
-                background: Container(
-                  color: Colors.red,
+    return AnimatedCrossFade(
+      crossFadeState:
+          _editMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      sizeCurve: Curves.easeOut,
+      duration: const Duration(milliseconds: 250),
+      firstChild: _buildExpandedCard(task),
+      secondChild: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Dismissible(
+          key: ValueKey(task.id),
+          background: Container(
+            color: Colors.red,
+          ),
+          onDismissed: (_) {
+            widget.deleteTaskHandler(task.id);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Task deleted'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          },
+          child: Container(
+            height: 75,
+            margin: const EdgeInsets.symmetric(vertical: 2),
+            child: GestureDetector(
+              onTap: () => widget.markTaskAsDoneHandler(task.id),
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                onDismissed: (_) {
-                  widget.deleteTaskHandler(task.id);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Task deleted'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                },
-                child: Container(
-                  height: 75,
-                  margin: const EdgeInsets.symmetric(vertical: 2),
-                  child: GestureDetector(
-                    onTap: () => widget.markTaskAsDoneHandler(task.id),
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: ListTile(
-                              leading: ReorderableDelayedDragStartListener(
-                                index: widget.itemIndex,
-                                child: const Icon(Icons.drag_indicator),
-                              ),
-                              title: Text(
-                                task.title,
-                                maxLines: 1,
-                              ),
-                              trailing: task.status == TaskStatus.incomplete
-                                  ? IconButton(
-                                      icon: const Icon(Icons.edit_rounded),
-                                      splashRadius: 25,
-                                      onPressed: toggleEditMode,
-                                    )
-                                  : const SizedBox(),
-                            ),
-                          ),
-                          task.isComplete
-                              ? const TaskCompleteOverlay()
-                              : Container(),
-                        ],
+                child: Stack(
+                  children: [
+                    Center(
+                      child: ListTile(
+                        leading: ReorderableDelayedDragStartListener(
+                          index: widget.itemIndex,
+                          child: const Icon(Icons.drag_indicator),
+                        ),
+                        title: Text(
+                          task.title,
+                          maxLines: 1,
+                        ),
+                        trailing: task.status == TaskStatus.incomplete
+                            ? IconButton(
+                                icon: const Icon(Icons.edit_rounded),
+                                splashRadius: 25,
+                                onPressed: toggleEditMode,
+                              )
+                            : const SizedBox(),
                       ),
                     ),
-                  ),
+                    task.isComplete ? const TaskCompleteOverlay() : Container(),
+                  ],
                 ),
               ),
             ),
+          ),
+        ),
+      ),
     );
   }
 }
