@@ -57,10 +57,9 @@ class _TaskCardState extends State<TaskCard> {
   Widget build(BuildContext context) {
     final task = widget.task;
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 250),
-      switchInCurve: Curves.easeIn,
-      switchOutCurve: Curves.elasticIn,
+    return AnimatedSize(
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
       child: _editMode
           ? _buildExpandedCard(task)
           : ClipRRect(
