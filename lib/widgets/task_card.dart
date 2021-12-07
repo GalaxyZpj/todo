@@ -9,14 +9,16 @@ class TaskCard extends StatefulWidget {
   final Task task;
   final Function updateTaskHandler;
   final Function deleteTaskHandler;
+  final Function markTaskAsDoneHandler;
 
-  const TaskCard(
-      {Key? key,
-      required this.itemIndex,
-      required this.task,
-      required this.updateTaskHandler,
-      required this.deleteTaskHandler})
-      : super(key: key);
+  const TaskCard({
+    Key? key,
+    required this.itemIndex,
+    required this.task,
+    required this.updateTaskHandler,
+    required this.deleteTaskHandler,
+    required this.markTaskAsDoneHandler,
+  }) : super(key: key);
 
   @override
   _TaskCardState createState() => _TaskCardState();
@@ -80,34 +82,39 @@ class _TaskCardState extends State<TaskCard> {
                 child: Container(
                   height: 75,
                   margin: const EdgeInsets.symmetric(vertical: 2),
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Stack(
-                      children: [
-                        Center(
-                          child: ListTile(
-                            leading: ReorderableDelayedDragStartListener(
-                              index: widget.itemIndex,
-                              child: const Icon(Icons.drag_indicator),
-                            ),
-                            title: Text(
-                              task.title,
-                              maxLines: 1,
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.edit_rounded),
-                              splashRadius: 25,
-                              onPressed: toggleEditMode,
+                  child: GestureDetector(
+                    onTap: () => widget.markTaskAsDoneHandler(task.id),
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: ListTile(
+                              leading: ReorderableDelayedDragStartListener(
+                                index: widget.itemIndex,
+                                child: const Icon(Icons.drag_indicator),
+                              ),
+                              title: Text(
+                                task.title,
+                                maxLines: 1,
+                              ),
+                              trailing: task.status == TaskStatus.incomplete
+                                  ? IconButton(
+                                      icon: const Icon(Icons.edit_rounded),
+                                      splashRadius: 25,
+                                      onPressed: toggleEditMode,
+                                    )
+                                  : const SizedBox(),
                             ),
                           ),
-                        ),
-                        task.isComplete
-                            ? const TaskCompleteOverlay()
-                            : Container(),
-                      ],
+                          task.isComplete
+                              ? const TaskCompleteOverlay()
+                              : Container(),
+                        ],
+                      ),
                     ),
                   ),
                 ),

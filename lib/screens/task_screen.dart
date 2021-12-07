@@ -52,6 +52,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       task: task,
                       updateTaskHandler: taskProvider.updateTask,
                       deleteTaskHandler: taskProvider.deleteTask,
+                      markTaskAsDoneHandler: taskProvider.toggleTaskStatus,
                     );
                   },
                   itemCount: taskIdList.length,

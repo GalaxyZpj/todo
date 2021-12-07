@@ -16,6 +16,7 @@ class TaskProvider with ChangeNotifier {
 
   Future<void> setup() async {
     final _prefs = await SharedPreferences.getInstance();
+    // _prefs.clear();
     Map<String, dynamic> state = json.decode(_prefs.getString('task') ?? '{}');
     if (state.isEmpty) {
       state = {'map': {}, 'sequence': []};
@@ -33,7 +34,16 @@ class TaskProvider with ChangeNotifier {
   }
 
   List<String> get taskIdList {
-    return _taskIdList.reversed.toList();
+    return [
+      ..._taskIdList
+          .where((element) => _taskMap[element].status == TaskStatus.incomplete)
+          .toList()
+          .reversed,
+      ..._taskIdList
+          .where((element) => _taskMap[element].status == TaskStatus.complete)
+          .toList()
+          .reversed,
+    ];
   }
 
   String get _nextTaskId {
@@ -78,6 +88,24 @@ class TaskProvider with ChangeNotifier {
       _taskMap.update(
         id,
         (_) => Task(id: id, title: title, description: description),
+      );
+      notifyListeners();
+      await saveState();
+    }
+  }
+
+  Future<void> toggleTaskStatus(String id) async {
+    if (_taskMap.containsKey(id)) {
+      _taskMap.update(
+        id,
+        (prev) => Task(
+          id: prev.id,
+          title: prev.title,
+          description: prev.description,
+          status: prev.status == TaskStatus.incomplete
+              ? TaskStatus.complete
+              : TaskStatus.incomplete,
+        ),
       );
       notifyListeners();
       await saveState();
