@@ -58,6 +58,7 @@ class _TaskFormState extends State<TaskForm> {
             decoration: const InputDecoration(
               label: Text('Title'),
             ),
+            textCapitalization: TextCapitalization.sentences,
             onSaved: (value) => _taskInput['title'] = value as String,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -68,6 +69,7 @@ class _TaskFormState extends State<TaskForm> {
           ),
           TextFormField(
             initialValue: _taskInput['description'],
+            textCapitalization: TextCapitalization.sentences,
             onSaved: (value) => _taskInput['description'] = value as String,
             decoration: const InputDecoration(
               label: Text('Description'),
