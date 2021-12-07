@@ -45,8 +45,13 @@ class _TaskCardState extends State<TaskCard> {
           key: ValueKey("${task.id}-form"),
           taskTitle: task.title,
           taskDescription: task.description,
-          saveHandler: (String title, String description) =>
-              widget.updateTaskHandler(task.id, title, description),
+          saveHandler: (String title, String description) {
+            widget.updateTaskHandler(task.id, title, description);
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Task updated'),
+              duration: Duration(seconds: 2),
+            ));
+          },
           closeFormHandler: toggleEditMode,
         ),
       ),
